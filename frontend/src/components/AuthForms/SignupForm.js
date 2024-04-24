@@ -15,7 +15,6 @@ function SignupForm({ showLoginForm }) {
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
     const [phone, setPhone] = useState("12345");
-    const [isLoading, setIsLoading] = useState(false); // state to show an actiivty indicator during signup
 
     // HOOKS
     const dispatch = useDispatch();
@@ -23,9 +22,7 @@ function SignupForm({ showLoginForm }) {
 
     // function to handle signup
     const onSignup = async () => {
-        // start the activity indicator
-        setIsLoading(true);
-
+        
         const isUserRegistered = await authQueries.registerUser(
             email,
             password,
@@ -44,8 +41,6 @@ function SignupForm({ showLoginForm }) {
             // reset all states
             resetStates();
         }
-        // stop the loading indicator
-        setIsLoading(false);
     };
 
     // function to reset the states

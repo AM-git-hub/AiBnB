@@ -1,5 +1,9 @@
 import React, { useState } from "react";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
+import { PlusIcon, XMarkIcon } from "@heroicons/react/24/outline";
+import { itineraryQueries } from "../api/itineraryQueries";
 import BeachShowcase from "../assets/beachShowcase.jpeg";
 import ShowcaseContainer from "../components/Utilities/ShowcaseContainer";
 import Navbar from "../components/Utilities/Navbar";
@@ -7,11 +11,7 @@ import LargeHeading from "../components/Texts/LargeHeading";
 import TextBox from "../components/Inputs/TextBox";
 import Button from "../components/Buttons/Button";
 import DateInput from "../components/Inputs/DateInput";
-import { useNavigate } from "react-router-dom";
 import Loader from "../components/Utilities/Loader";
-import { PlusIcon, XMarkIcon } from "@heroicons/react/24/outline";
-import { itineraryQueries } from "../api/itineraryQueries";
-import { useDispatch } from "react-redux";
 import ItineraryShowcaseCard from "../components/Cards/ItineraryShowcaseCard";
 
 function CreateItinerary() {
@@ -33,7 +33,7 @@ function CreateItinerary() {
     // function to create itinerary
     const createItinerary = async () => {
         // show loader till the itinerary is created
-        // setIsLoading(true);
+        setIsLoading(true);
 
         // QUERY: post a request to create an itinerary
         const itinerary = await itineraryQueries.createItinerary(
@@ -46,10 +46,12 @@ function CreateItinerary() {
             dispatch
         );
 
-        console.log("itinerary", itinerary);
+        if (itinerary) {
+            // set itineraryCreated
+            setItineraryCreated(itinerary);
+        }
 
-        // set itineraryCreated
-        setItineraryCreated(itinerary);
+        setIsLoading(false);
     };
 
     // function to add preference
@@ -72,7 +74,7 @@ function CreateItinerary() {
     };
 
     return (
-        <div className="h-[100vh] relative bg-black overflow-x-hidden">
+        <div className="h-[100vh] py-5 overflow-auto relative bg-black overflow-x-hidden">
             {/* Navbar */}
             <Navbar />
             {/* Loader */}
@@ -82,7 +84,7 @@ function CreateItinerary() {
                 </div>
             ) : itineraryCreated ? (
                 <ShowcaseContainer>
-                    <ItineraryShowcaseCard />
+                    <ItineraryShowcaseCard itinerary={itineraryCreated} />
                 </ShowcaseContainer>
             ) : (
                 <ShowcaseContainer>

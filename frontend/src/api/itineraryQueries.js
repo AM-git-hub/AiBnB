@@ -22,31 +22,6 @@ const convertPreferencesToString = (preferences) => {
     return preferences.join(", ");
 };
 
-// function to convert itinerary day keys to a consolidated
-// array "days"
-const transformItineraryData = (itinerary) => {
-    console.log("itinerary", itinerary.Title);
-
-    // create a transformed itinerary data to which
-    // we will push the data for each day
-    const transformedItineraryData = {
-        title: itinerary["Title"],
-        days: [],
-    };
-
-    // Iterate through each property in itinerary
-    for (const key in itinerary) {
-        // Check if the key starts with "Day"
-        if (key.startsWith("Day")) {
-            // Add the Day's data into the array
-            transformItineraryData.days.push(itinerary[key]);
-        }
-    }
-
-    // return the transformed data
-    return transformedItineraryData;
-};
-
 // export the queries handling requests regarding
 // itinerary creation, storing, editing
 export const itineraryQueries = {
@@ -81,15 +56,13 @@ export const itineraryQueries = {
                 itineraryInputData
             );
 
+            console.log("response", response.data.itinerary);
+
             // get itinearry data
             const itinerary = JSON.parse(response.data.itinerary);
 
-
-            // transform itinerary to a usable format
-            const transformedItineraryData = transformItineraryData(itinerary);
-
             // return itinerary data
-            return transformedItineraryData;
+            return itinerary;
         } catch (error) {
             console.log("error", error);
             alert("Something went wrong");

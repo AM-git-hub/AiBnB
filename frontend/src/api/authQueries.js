@@ -42,6 +42,8 @@ export const authQueries = {
                 payload: { refreshToken: refresh },
             });
 
+            // 
+
             // return true to indicate that user has registered succesfully
             return true;
         } catch (error) {
