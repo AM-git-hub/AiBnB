@@ -10,6 +10,9 @@ import DateInput from "../components/Inputs/DateInput";
 import { useNavigate } from "react-router-dom";
 import Loader from "../components/Utilities/Loader";
 import { PlusIcon, XMarkIcon } from "@heroicons/react/24/outline";
+import { itineraryQueries } from "../api/itineraryQueries";
+import { useDispatch } from "react-redux";
+import ItineraryShowcaseCard from "../components/Cards/ItineraryShowcaseCard";
 
 function CreateItinerary() {
     // STATES
@@ -17,21 +20,36 @@ function CreateItinerary() {
     const [startDate, setStartDate] = useState("");
     const [endDate, setEndDate] = useState("");
     const [preference, setPreference] = useState("");
-    const [guests, setGuests] = useState();
+    const [budget, setBudget] = useState("");
+    const [guests, setGuests] = useState("");
     const [preferences, setPreferences] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
+    const [itineraryCreated, setItineraryCreated] = useState(null);
 
     // HOOKS
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     // function to create itinerary
-    const createItinerary = () => {
-        setIsLoading(true);
+    const createItinerary = async () => {
+        // show loader till the itinerary is created
+        // setIsLoading(true);
 
-        // test the loader to show for 4 seconds
-        setTimeout(() => {
-            setIsLoading(false);
-        }, 4000);
+        // QUERY: post a request to create an itinerary
+        const itinerary = await itineraryQueries.createItinerary(
+            location,
+            startDate,
+            endDate,
+            guests,
+            budget,
+            preferences,
+            dispatch
+        );
+
+        console.log("itinerary", itinerary);
+
+        // set itineraryCreated
+        setItineraryCreated(itinerary);
     };
 
     // function to add preference
@@ -45,125 +63,151 @@ function CreateItinerary() {
 
     // function to delete preference
     const deletePreference = (selectedIndex) => {
-        // filter preferences
+        // filter preferences to not include the deleted preference
         const filteredPreferences = preferences.filter(
-            (preference, index) => index !== selectedIndex
+            (_, index) => index !== selectedIndex
         );
-
+        // set preferences to be the filtered preferences
         setPreferences(filteredPreferences);
     };
 
     return (
-        <div className="h-[100vh] relative bg-black overflow-hidden">
+        <div className="h-[100vh] relative bg-black overflow-x-hidden">
             {/* Navbar */}
             <Navbar />
             {/* Loader */}
-            {isLoading && (
+            {isLoading ? (
                 <div className="absolute top-0 left-0 h-[100%] w-[100%]">
                     <Loader />
                 </div>
-            )}
-            <ShowcaseContainer>
-                {/* Main */}
-                <div className="h-[100%] flex flex-col justify-center">
-                    <LargeHeading>AIBNB YOUR NEXT TRIP</LargeHeading>
+            ) : itineraryCreated ? (
+                <ShowcaseContainer>
+                    <ItineraryShowcaseCard />
+                </ShowcaseContainer>
+            ) : (
+                <ShowcaseContainer>
+                    {/* Main */}
+                    <div className="h-[100%] flex flex-col justify-center">
+                        <LargeHeading>AIBNB YOUR NEXT TRIP</LargeHeading>
 
-                    <div className="flex flex-row mt-5 space-x-10">
-                        {/* Itinerary Form */}
-                        <div className="flex flex-col flex-1 space-y-8">
-                            {/* Location Input */}
-                            <div>
-                                <TextBox
-                                    value={location}
-                                    placeholder="Enter Location"
-                                    onChange={(e) =>
-                                        setLocation(e.target.value)
-                                    }
-                                />
-                            </div>
+                        <div className="flex flex-row mt-5 space-x-10">
+                            {/* Itinerary Form */}
+                            <div className="flex flex-col flex-1 space-y-8">
+                                {/* Location Input */}
+                                <div>
+                                    <TextBox
+                                        value={location}
+                                        placeholder="Enter Location"
+                                        onChange={(e) =>
+                                            setLocation(e.target.value)
+                                        }
+                                    />
+                                </div>
 
-                            {/* Date Inmput */}
-                            <div className="flex flex-row items-end space-x-10">
-                                <DateInput
-                                    inputValue={startDate}
-                                    onChange={(e) =>
-                                        setStartDate(e.target.value)
-                                    }
-                                    placeholder="Start Date"
-                                />
-                                <span className="text-white">TO</span>
-                                <DateInput
-                                    inputValue={endDate}
-                                    onChange={(e) => setEndDate(e.target.value)}
-                                    placeholder="End Date"
-                                />
-                            </div>
+                                {/* Date Inmput */}
+                                <div className="flex flex-row items-end space-x-10">
+                                    <DateInput
+                                        inputValue={startDate}
+                                        onChange={(e) =>
+                                            setStartDate(e.target.value)
+                                        }
+                                        placeholder="Start Date"
+                                    />
+                                    <span className="text-white">TO</span>
+                                    <DateInput
+                                        inputValue={endDate}
+                                        onChange={(e) =>
+                                            setEndDate(e.target.value)
+                                        }
+                                        placeholder="End Date"
+                                    />
+                                </div>
 
-                            {/* User Preferences */}
-                            <div className="flex flex-col space-y-5">
-                                <TextBox
-                                    value={preference}
-                                    onChange={(e) =>
-                                        setPreference(e.target.value)
-                                    }
-                                    placeholder="Preferences"
-                                    rightIcon={
-                                        <PlusIcon color="white" height={20} />
-                                    }
-                                    onClickIcon={addPreference}
-                                />
+                                {/* User Preferences */}
+                                <div className="flex flex-col space-y-5">
+                                    <TextBox
+                                        value={preference}
+                                        onChange={(e) =>
+                                            setPreference(e.target.value)
+                                        }
+                                        placeholder="Preferences"
+                                        rightIcon={
+                                            <PlusIcon
+                                                color="white"
+                                                height={20}
+                                            />
+                                        }
+                                        onClickIcon={addPreference}
+                                    />
 
-                                {/* Preferences */}
-                                {preferences.length > 0 && (
-                                    <div className="flex flex-row space-x-3">
-                                        {preferences.map(
-                                            (preference, index) => (
-                                                <div className="border border-white flex flex-row p-2 space-x-2">
-                                                    <span className="text-white">
-                                                        {preference}
-                                                    </span>
-                                                    <button
-                                                        onClick={() =>
-                                                            deletePreference(
-                                                                index
-                                                            )
-                                                        }
+                                    {/* Preferences */}
+                                    {preferences.length > 0 && (
+                                        <div className="flex flex-row space-x-3">
+                                            {preferences.map(
+                                                (preference, index) => (
+                                                    <div
+                                                        key={index}
+                                                        className="border border-white flex flex-row p-2 space-x-2"
                                                     >
-                                                        <XMarkIcon
-                                                            color="white"
-                                                            height={20}
-                                                        />
-                                                    </button>
-                                                </div>
-                                            )
-                                        )}
-                                    </div>
-                                )}
-                            </div>
+                                                        <span className="text-white">
+                                                            {preference}
+                                                        </span>
+                                                        <button
+                                                            onClick={() =>
+                                                                deletePreference(
+                                                                    index
+                                                                )
+                                                            }
+                                                        >
+                                                            <XMarkIcon
+                                                                color="white"
+                                                                height={20}
+                                                            />
+                                                        </button>
+                                                    </div>
+                                                )
+                                            )}
+                                        </div>
+                                    )}
+                                </div>
 
-                            {/* Guests */}
-                            <div>
-                                <TextBox
-                                    value={guests}
-                                    onChange={(e) => setGuests(e.target.value)}
-                                    placeholder="Guests"
+                                {/* Budget */}
+                                <div>
+                                    <TextBox
+                                        value={budget}
+                                        onChange={(e) =>
+                                            setBudget(e.target.value)
+                                        }
+                                        placeholder="Budget"
+                                    />
+                                </div>
+
+                                {/* Guests */}
+                                <div>
+                                    <TextBox
+                                        value={guests}
+                                        onChange={(e) =>
+                                            setGuests(e.target.value)
+                                        }
+                                        placeholder="Guests"
+                                    />
+                                </div>
+
+                                {/* Submit form */}
+                                <Button
+                                    label="LET'S GO"
+                                    onClick={createItinerary}
                                 />
                             </div>
 
-                            {/* Submit form */}
-                            <Button
-                                label="LET'S GO"
-                                onClick={createItinerary}
-                            />
-                        </div>
-
-                        {/* Form Showcase Image */}
-                        <div className="flex flex-1 flex-col">
-                            <img src={BeachShowcase} />
+                            {/* Form Showcase Image */}
+                            <div className="flex flex-1 flex-col">
+                                <img src={BeachShowcase} />
+                            </div>
                         </div>
                     </div>
-                </div>
-            </ShowcaseContainer>
+                </ShowcaseContainer>
+            )}
         </div>
     );
 }
