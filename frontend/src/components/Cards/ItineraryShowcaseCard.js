@@ -18,13 +18,19 @@ const DayCard = ({
     <div className="border-2 border-white p-5 flex flex-col space-y-5">
         {/* Day Number */}
         <div>
-            <span className="text-white text-3xl font-bold">Day {dayNumber}</span>
+            <span className="text-white text-3xl font-bold">
+                Day {dayNumber}
+            </span>
         </div>
 
         {/* Day Events */}
         <div className="flex flex-col space-y-5">
             {events.map((dayEvent, index) => (
-                <div className={`${index !== events.length - 1 && "border-b-2"} border-white py-4`}>
+                <div
+                    className={`${
+                        index !== events.length - 1 && "border-b-2"
+                    } border-white py-4`}
+                >
                     {/* Time Stamp */}
                     <DayCardDetail
                         label="Time"
@@ -41,25 +47,24 @@ const DayCard = ({
                             value={dayEvent["Travel Detail"]}
                         />
                     )}
-
-                    {/* Food Recommendation */}
-                    {foodRecommendation && (
-                        <DayCardDetail
-                            label="Food Recommendation"
-                            value={foodRecommendation}
-                        />
-                    )}
-
-                    {/* Accomdation Recommendation */}
-                    {/* Food Recommendation */}
-                    {accomodationRecommendation && (
-                        <DayCardDetail
-                            label="Accomodation Recommendation"
-                            value={accomodationRecommendation}
-                        />
-                    )}
                 </div>
             ))}
+            {/* Food Recommendation */}
+            {foodRecommendation && (
+                <DayCardDetail
+                    label="Food Recommendation"
+                    value={foodRecommendation}
+                />
+            )}
+
+            {/* Accomdation Recommendation */}
+            {/* Food Recommendation */}
+            {accomodationRecommendation && (
+                <DayCardDetail
+                    label="Accomodation Recommendation"
+                    value={accomodationRecommendation}
+                />
+            )}
         </div>
     </div>
 );
