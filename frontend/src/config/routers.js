@@ -24,7 +24,7 @@ const router = createBrowserRouter([
     {
         path: "/createItinerary",
         element: <CreateItinerary />
-    }
+    },
 ]);
 
 export default router;
