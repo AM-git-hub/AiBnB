@@ -9,6 +9,7 @@ from .utils import generate_itinerary
 
 # Create your views here.
 class GetItineraryView(APIView):
+    permission_classes = [IsAuthenticated]
     def post(self, request):
         print(request.data)
         generated_itinerary = generate_itinerary(request.data['destination'], request.data['days'], request.data['guests'], request.data['budget'], request.data['preferences'])
