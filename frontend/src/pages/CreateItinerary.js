@@ -9,6 +9,7 @@ import Button from "../components/Buttons/Button";
 import DateInput from "../components/Inputs/DateInput";
 import { useNavigate } from "react-router-dom";
 import Loader from "../components/Utilities/Loader";
+import { PlusIcon, XMarkIcon } from "@heroicons/react/24/outline";
 
 function CreateItinerary() {
     // STATES
@@ -33,6 +34,25 @@ function CreateItinerary() {
         }, 4000);
     };
 
+    // function to add preference
+    const addPreference = () => {
+        // add preference to preferences
+        setPreferences([...preferences, preference]);
+
+        // reset the input preference
+        setPreference("");
+    };
+
+    // function to delete preference
+    const deletePreference = (selectedIndex) => {
+        // filter preferences
+        const filteredPreferences = preferences.filter(
+            (preference, index) => index !== selectedIndex
+        );
+
+        setPreferences(filteredPreferences);
+    };
+
     return (
         <div className="h-[100vh] relative bg-black overflow-hidden">
             {/* Navbar */}
@@ -53,24 +73,81 @@ function CreateItinerary() {
                         <div className="flex flex-col flex-1 space-y-8">
                             {/* Location Input */}
                             <div>
-                                <TextBox placeholder="Enter Location" />
+                                <TextBox
+                                    value={location}
+                                    placeholder="Enter Location"
+                                    onChange={(e) =>
+                                        setLocation(e.target.value)
+                                    }
+                                />
                             </div>
 
                             {/* Date Inmput */}
                             <div className="flex flex-row items-end space-x-10">
-                                <DateInput placeholder="Start Date" />
+                                <DateInput
+                                    inputValue={startDate}
+                                    onChange={(e) =>
+                                        setStartDate(e.target.value)
+                                    }
+                                    placeholder="Start Date"
+                                />
                                 <span className="text-white">TO</span>
-                                <DateInput placeholder="End Date" />
+                                <DateInput
+                                    inputValue={endDate}
+                                    onChange={(e) => setEndDate(e.target.value)}
+                                    placeholder="End Date"
+                                />
                             </div>
 
                             {/* User Preferences */}
-                            <div>
-                                <TextBox placeholder="Preferences" />
+                            <div className="flex flex-col space-y-5">
+                                <TextBox
+                                    value={preference}
+                                    onChange={(e) =>
+                                        setPreference(e.target.value)
+                                    }
+                                    placeholder="Preferences"
+                                    rightIcon={
+                                        <PlusIcon color="white" height={20} />
+                                    }
+                                    onClickIcon={addPreference}
+                                />
+
+                                {/* Preferences */}
+                                {preferences.length > 0 && (
+                                    <div className="flex flex-row space-x-3">
+                                        {preferences.map(
+                                            (preference, index) => (
+                                                <div className="border border-white flex flex-row p-2 space-x-2">
+                                                    <span className="text-white">
+                                                        {preference}
+                                                    </span>
+                                                    <button
+                                                        onClick={() =>
+                                                            deletePreference(
+                                                                index
+                                                            )
+                                                        }
+                                                    >
+                                                        <XMarkIcon
+                                                            color="white"
+                                                            height={20}
+                                                        />
+                                                    </button>
+                                                </div>
+                                            )
+                                        )}
+                                    </div>
+                                )}
                             </div>
 
                             {/* Guests */}
                             <div>
-                                <TextBox placeholder="Guests" />
+                                <TextBox
+                                    value={guests}
+                                    onChange={(e) => setGuests(e.target.value)}
+                                    placeholder="Guests"
+                                />
                             </div>
 
                             {/* Submit form */}
