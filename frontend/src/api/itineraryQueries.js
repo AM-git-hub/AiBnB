@@ -32,7 +32,8 @@ export const itineraryQueries = {
         endDate,
         guests,
         budget,
-        preferences
+        preferences,
+        accessToken
     ) => {
         // get the total number of days to create the itinerary for
         const days = calculateDays(startDate, endDate);
@@ -53,7 +54,12 @@ export const itineraryQueries = {
             // get the response generated
             const response = await axios.post(
                 `${baseUrl}/itinerary/get-itinerary/`,
-                itineraryInputData
+                itineraryInputData,
+                {
+                    headers: {
+                        Authorization: `Bearer ${accessToken}`,
+                    },
+                }
             );
 
             console.log("response", response.data.itinerary);

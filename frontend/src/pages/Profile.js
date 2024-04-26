@@ -27,15 +27,13 @@ function Profile() {
     // function to fetch profile data
     const fetchProfileData = async () => {
         // invoke a api call to get profile data
-        await authQueries.getProfile(accessToken, profileData, dispatch);
+        await authQueries.getProfile(accessToken, dispatch);
     };
 
     // Get user information on load
     useEffect(() => {
         fetchProfileData();
     }, []);
-
-    console.log("profile data", profileData);
 
     return (
         <div className="h-[100vh] overflow-hidden bg-black">
@@ -54,8 +52,8 @@ function Profile() {
 
                         {/* Profile Information */}
                         <div>
-                          <ProfileLabel label="Email" value={profileData.email} />
-                          <ProfileLabel label="Name" value={`${profileData.first_name} ${profileData.last_name}`} />
+                          <ProfileLabel label="Email" value={profileData?.email} />
+                          <ProfileLabel label="Name" value={`${profileData?.first_name} ${profileData?.last_name}`} />
                         </div>
                     </div>
 

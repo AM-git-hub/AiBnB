@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 import { PlusIcon, XMarkIcon } from "@heroicons/react/24/outline";
@@ -15,6 +15,8 @@ import Loader from "../components/Utilities/Loader";
 import ItineraryShowcaseCard from "../components/Cards/ItineraryShowcaseCard";
 
 function CreateItinerary() {
+    const { accessToken } = useSelector((state) => state.UserReducer);
+
     // STATES
     const [location, setLocation] = useState("");
     const [startDate, setStartDate] = useState("");
@@ -43,6 +45,7 @@ function CreateItinerary() {
             guests,
             budget,
             preferences,
+            accessToken,
             dispatch
         );
 

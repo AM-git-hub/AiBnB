@@ -42,7 +42,7 @@ export const authQueries = {
                 payload: { refreshToken: refresh },
             });
 
-            // 
+            //
 
             // return true to indicate that user has registered succesfully
             return true;
@@ -85,28 +85,26 @@ export const authQueries = {
     },
 
     // get profile
-    getProfile: async (accessToken, profileDataFromRedux, dispatch) => {
+    getProfile: async (accessToken, dispatch) => {
         // If profile data is not present in redux
-        if (!profileDataFromRedux) {
-            try {
-                // pass the access token in the authorization header
-                const response = await axios.get(`${baseUrl}/auth/profile/`, {
-                    headers: {
-                        Authorization: `Bearer ${accessToken}`,
-                    },
-                });
+        try {
+            // pass the access token in the authorization header
+            const response = await axios.get(`${baseUrl}/auth/profile/`, {
+                headers: {
+                    Authorization: `Bearer ${accessToken}`,
+                },
+            });
 
-                // get profile data
-                const profileData = response.data.data;
+            // get profile data
+            const profileData = response.data.data;
 
-                // dispatch the response data to redux
-                dispatch({
-                    type: userActionTypes.SET_PROFILE_DATA,
-                    payload: { profileData: profileData },
-                });
-            } catch (error) {
-                console.error("Error while fetching getting profile", error);
-            }
+            // dispatch the response data to redux
+            dispatch({
+                type: userActionTypes.SET_PROFILE_DATA,
+                payload: { profileData: profileData },
+            });
+        } catch (error) {
+            console.error("Error while fetching getting profile", error);
         }
     },
 
@@ -114,6 +112,5 @@ export const authQueries = {
         dispatch({
             type: userActionTypes.LOGOUT_USER,
         });
-
-    }
+    },
 };
