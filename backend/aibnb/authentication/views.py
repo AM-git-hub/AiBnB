@@ -88,3 +88,12 @@ class UserEmailVerificationView(APIView):
         serializer.is_valid(raise_exception=True)
         return Response({'msg': 'Email verification link sent successfully'}, status=status.HTTP_200_OK)
 
+
+
+class UserDeleteView(APIView):
+    renderer_classes = [UserRenderer]
+    permission_classes = [IsAuthenticated]
+    def post(self, request):
+        user = request.user
+        user.delete()
+        return Response({'msg': 'User deleted successfully'}, status=status.HTTP_200_OK)
