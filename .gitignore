@@ -2,5 +2,9 @@ __pycache__
 
 venv
 myenv
+<<<<<<< api
+
+venv
 package-lock.json
 
+>>>>>>> main
