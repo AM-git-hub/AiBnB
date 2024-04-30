@@ -97,3 +97,14 @@ class UserDeleteView(APIView):
         user = request.user
         user.delete()
         return Response({'msg': 'User deleted successfully'}, status=status.HTTP_200_OK)
+
+class UserUpdateView(APIView):
+    renderer_classes = [UserRenderer]
+    permission_classes = [IsAuthenticated]
+    def patch(self, request):
+        user = request.user
+        serializer = UserUpdateSerializer(user, data=request.data)
+        if serializer.is_valid(raise_exception=True):
+            serializer.save()
+            return Response({'msg': 'User updated successfully'}, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
