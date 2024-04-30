@@ -1,5 +1,6 @@
 import CreateItinerary from "../pages/CreateItinerary";
 import Dashboard from "../pages/Dashboard";
+import Itinerary from "../pages/Itinerary";
 import Profile from "../pages/Profile";
 import ResetPassword from "../pages/ResetPassword";
 import PrivateLayout from "./PrivateLayout";
@@ -26,6 +27,10 @@ const router = createBrowserRouter([
     {
         path: "/createItinerary",
         element: <CreateItinerary />,
+    },
+    {
+        path: "/itinerary/:id",
+        element: <Itinerary />,
     },
 ]);
 

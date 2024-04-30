@@ -2,6 +2,7 @@ import classes from "./Profile.module.css";
 import { ArrowRightIcon, UserCircleIcon } from "@heroicons/react/24/outline";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 import ShowcaseContainer from "../components/Utilities/ShowcaseContainer";
 import Navbar from "../components/Utilities/Navbar";
@@ -22,6 +23,7 @@ function Profile() {
 
     // HOOKS
     const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     // Get user acess and refresh token
     const { accessToken, profileData } = useSelector(
@@ -39,6 +41,11 @@ function Profile() {
         );
 
         setItineraries(itineraries);
+    };
+
+    // function to navigate to itinerary page
+    const handleItineraryClick = (itineraryId) => {
+        navigate(`/itinerary/${itineraryId}`);
     };
 
     // Get user information on load
@@ -87,8 +94,12 @@ function Profile() {
                         ) : (
                             <div className="space-y-5">
                                 {/* Map itineraries */}
-                                {itineraries.map((itinerary) => (
+                                {itineraries.map((itinerary, index) => (
                                     <button
+                                        key={index}
+                                        onClick={() =>
+                                            handleItineraryClick(itinerary.id)
+                                        }
                                         className={`flex flex-row w-[100%] items-center justify-between p-5 border border-white ${classes.profileBtn}`}
                                     >
                                         <div>

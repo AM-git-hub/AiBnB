@@ -101,7 +101,7 @@ export const itineraryQueries = {
         // get itineraries of the user
         try {
             const response = await axios.get(
-                `${baseUrl}/itinerary/get-user-itineraries/?private=True`,
+                `${baseUrl}/itinerary/get-user-itineraries/`,
                 {
                     headers: {
                         Authorization: `Bearer ${accessToken}`,
@@ -113,7 +113,36 @@ export const itineraryQueries = {
             const itineraries = response.data.data;
 
             return itineraries;
+        } catch (error) {
+            console.error("");
+        }
+    },
 
-        } catch (error) {}
+    // get itinerary by id
+    getItineraryById: async (id, accessToken) => {
+        // create a axios get request to get itinerary
+        try {
+            // get response
+            const response = await axios.get(
+                `${baseUrl}/itinerary/get-user-itineraries/?ids=${id}`,
+                {
+                    headers: {
+                        Authorization: `Bearer ${accessToken}`,
+                    },
+                }
+            );
+
+            // unpack itinerary
+            const itinerary = response.data.data[0];
+
+            // parse JSON string to JSON
+            const itineraryJSON = JSON.parse(itinerary.itinerary_description);
+
+            // return itinerary data
+
+            return itineraryJSON;
+        } catch (error) {
+            console.error("Error while fetching itinerary by id", error);
+        }
     },
 };
