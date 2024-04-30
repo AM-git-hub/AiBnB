@@ -8,4 +8,5 @@ urlpatterns = [
     path('update-itinerary/<int:pk>/', UpdateItineraryView.as_view(), name = "update-itinerary"),
     path('create-review/', CreateReviewView.as_view(), name = "create-review"),
     path('get-public-itineraries/', GetPublicItinerariesView.as_view(), name = "get-public-itineraries"),
+    path('delete-itinerary/<int:pk>/', DeleteItineraryView.as_view(), name = "delete-itinerary"),
 ]
