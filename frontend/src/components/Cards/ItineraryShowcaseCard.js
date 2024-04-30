@@ -92,10 +92,6 @@ function ItineraryShowcaseCard({ itinerary }) {
                 ))}
             </div>
 
-            {/* Save Button to save the itinerary */}
-            <div>
-                <Button label="SAVE" />
-            </div>
         </div>
     );
 }

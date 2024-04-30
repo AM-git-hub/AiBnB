@@ -29,8 +29,8 @@ function CreateItinerary() {
     const [itineraryCreated, setItineraryCreated] = useState(null);
 
     // HOOKS
-    const navigate = useNavigate();
     const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     // function to create itinerary
     const createItinerary = async () => {
@@ -76,6 +76,16 @@ function CreateItinerary() {
         setPreferences(filteredPreferences);
     };
 
+    // function to save itinerary
+    const saveItinerary = async () => {
+        // succesfully save itinerary
+        await itineraryQueries.saveItinerary(itineraryCreated, accessToken);
+
+        // remove the itinerary created state
+        setItineraryCreated(null);
+        navigate("/profile")
+    };
+
     return (
         <div className="h-[100vh] py-5 overflow-auto relative bg-black overflow-x-hidden">
             {/* Navbar */}
@@ -88,6 +98,9 @@ function CreateItinerary() {
             ) : itineraryCreated ? (
                 <ShowcaseContainer>
                     <ItineraryShowcaseCard itinerary={itineraryCreated} />
+                    <div className="my-5">
+                        <Button label="Save" onClick={saveItinerary} />
+                    </div>
                 </ShowcaseContainer>
             ) : (
                 <ShowcaseContainer>

@@ -62,10 +62,10 @@ export const itineraryQueries = {
                 }
             );
 
-            console.log("response", response.data.itinerary);
+            console.log("response", response.data.data.itinerary);
 
             // get itinearry data
-            const itinerary = JSON.parse(response.data.itinerary);
+            const itinerary = JSON.parse(response.data.data.itinerary);
 
             // return itinerary data
             return itinerary;
@@ -73,5 +73,47 @@ export const itineraryQueries = {
             console.log("error", error);
             alert("Something went wrong");
         }
+    },
+
+    // save itinerary
+    saveItinerary: async (itineraryCreated, accessToken) => {
+        // post the itinerary created
+        try {
+            await axios.post(
+                `${baseUrl}/itinerary/create-itinerary/`,
+                {
+                    name: itineraryCreated["Title"],
+                    itinerary_description: JSON.stringify(itineraryCreated),
+                },
+                {
+                    headers: {
+                        Authorization: `Bearer ${accessToken}`,
+                    },
+                }
+            );
+        } catch (error) {
+            console.error("Something went wrong while saving itinerary", error);
+        }
+    },
+
+    // get all itineraries
+    getAllItineraries: async (accessToken) => {
+        // get itineraries of the user
+        try {
+            const response = await axios.get(
+                `${baseUrl}/itinerary/get-user-itineraries/?private=True`,
+                {
+                    headers: {
+                        Authorization: `Bearer ${accessToken}`,
+                    },
+                }
+            );
+
+            // Unpack the itineraries
+            const itineraries = response.data.data;
+
+            return itineraries;
+
+        } catch (error) {}
     },
 };

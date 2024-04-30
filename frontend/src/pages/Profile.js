@@ -1,21 +1,25 @@
-import React, { useEffect } from "react";
+import classes from "./Profile.module.css";
+import { ArrowRightIcon, UserCircleIcon } from "@heroicons/react/24/outline";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import ShowcaseContainer from "../components/Utilities/ShowcaseContainer";
-import { authQueries } from "../api/authQueries";
 import Navbar from "../components/Utilities/Navbar";
-import { UserCircleIcon } from "@heroicons/react/24/outline";
 import LargeHeading from "../components/Texts/LargeHeading";
-import Caption from "../components/Texts/Caption";
+import { authQueries } from "../api/authQueries";
+import { itineraryQueries } from "../api/itineraryQueries";
 
-const ProfileLabel = ({label, value}) => (
-  <div className="flex flex-row">
-    <span className="text-white font-bold">{label}:&nbsp;</span>
-    <span className="text-white">{value}</span>
-  </div>
-)
+const ProfileLabel = ({ label, value }) => (
+    <div className="flex flex-row">
+        <span className="text-white font-bold">{label}:&nbsp;</span>
+        <span className="text-white">{value}</span>
+    </div>
+);
 
 function Profile() {
+    // STATES
+    const [itineraries, setItineraries] = useState([]);
+
     // HOOKS
     const dispatch = useDispatch();
 
@@ -28,6 +32,13 @@ function Profile() {
     const fetchProfileData = async () => {
         // invoke a api call to get profile data
         await authQueries.getProfile(accessToken, dispatch);
+
+        // get the itineraries for the user
+        const itineraries = await itineraryQueries.getAllItineraries(
+            accessToken
+        );
+
+        setItineraries(itineraries);
     };
 
     // Get user information on load
@@ -52,17 +63,49 @@ function Profile() {
 
                         {/* Profile Information */}
                         <div>
-                          <ProfileLabel label="Email" value={profileData?.email} />
-                          <ProfileLabel label="Name" value={`${profileData?.first_name} ${profileData?.last_name}`} />
+                            <ProfileLabel
+                                label="Email"
+                                value={profileData?.email}
+                            />
+                            <ProfileLabel
+                                label="Name"
+                                value={`${profileData?.first_name} ${profileData?.last_name}`}
+                            />
                         </div>
                     </div>
 
-                    <div className="flex flex-col flex-1 h-[80%] border-2 border-white p-5">
-                      <LargeHeading>MY ITINERARIES</LargeHeading>
+                    <div className="flex flex-col flex-1 h-[80%] border-2 border-white p-5 space-y-3">
+                        <LargeHeading>MY ITINERARIES</LargeHeading>
 
-                      <div className="h-[100%] flex flex-col items-center justify-center">
-                        <Caption>Nothing to show</Caption>
-                      </div>
+                        {/* If itenaries are empty */}
+                        {itineraries.length === 0 ? (
+                            <div className="h-[100%] flex flex-col items-center justify-center">
+                                <span className="text-white">
+                                    No Itineraries to show
+                                </span>
+                            </div>
+                        ) : (
+                            <div className="space-y-5">
+                                {/* Map itineraries */}
+                                {itineraries.map((itinerary) => (
+                                    <button
+                                        className={`flex flex-row w-[100%] items-center justify-between p-5 border border-white ${classes.profileBtn}`}
+                                    >
+                                        <div>
+                                            <span className="text-white text-lg">
+                                                {itinerary.name}
+                                            </span>
+                                        </div>
+                                        <div>
+                                            <ArrowRightIcon
+                                                color="white"
+                                                height={30}
+                                            />
+                                        </div>
+                                    </button>
+                                ))}
+                            </div>
+                        )}
                     </div>
                 </div>
             </ShowcaseContainer>
