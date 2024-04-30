@@ -85,7 +85,7 @@ function Profile() {
                         <LargeHeading>MY ITINERARIES</LargeHeading>
 
                         {/* If itenaries are empty */}
-                        {itineraries.length === 0 ? (
+                        {itineraries?.length === 0 ? (
                             <div className="h-[100%] flex flex-col items-center justify-center">
                                 <span className="text-white">
                                     No Itineraries to show

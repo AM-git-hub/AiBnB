@@ -1,5 +1,6 @@
 import CreateItinerary from "../pages/CreateItinerary";
 import Dashboard from "../pages/Dashboard";
+import Feedback from "../pages/Feedback";
 import Itinerary from "../pages/Itinerary";
 import Profile from "../pages/Profile";
 import ResetPassword from "../pages/ResetPassword";
