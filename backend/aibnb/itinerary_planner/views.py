@@ -8,7 +8,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from .utils import generate_itinerary
 from .serializers import *
-from .models import Itinerary
+from .models import Itinerary, Review
 from authentication.renderers import UserRenderer
 
 
@@ -83,3 +83,14 @@ class GetPublicItinerariesView(APIView):
         serializer = ItineraryListSerializer(itineraries, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
+class DeleteItineraryView(APIView):
+    permission_classes = [IsAuthenticated]
+    renderer_classes = [UserRenderer]
+    def delete(self, request, pk):
+        itinerary = Itinerary.objects.get(id=pk)
+        if request.user.id != itinerary.user.id:
+            return Response({'error': 'You do not have permission to delete this itinerary'}, status=status.HTTP_403_FORBIDDEN)
+        itinerary.delete()
+        Review.objects.filter(itinerary=pk).delete()
+
+        return Response({'msg': 'Itinerary deleted successfully'}, status=status.HTTP_200_OK)
