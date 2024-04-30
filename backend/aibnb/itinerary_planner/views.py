@@ -40,7 +40,8 @@ class GetUserItinerariesView(APIView):
         private = request.query_params.get('private', None)
         ids = request.query_params.get('ids', None)
         if ids:
-            itineraries = Itinerary.objects.filter(user=request.user.id, id__in=ids.split(','))
+
+            itineraries = Itinerary.objects.filter(user=request.user.id, is_private=private, id__in=ids.split(','))
         elif private:
             itineraries = Itinerary.objects.filter(user=request.user.id, is_private=private)
         else:

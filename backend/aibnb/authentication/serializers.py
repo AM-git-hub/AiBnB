@@ -4,6 +4,8 @@ from django.utils.encoding import force_bytes, smart_str, DjangoUnicodeDecodeErr
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
 from .utils import Util
+import os
+
 
 class UserSerializer(serializers.ModelSerializer):
     password2 = serializers.CharField(style={'input_type': 'password'}, write_only=True)
@@ -36,7 +38,7 @@ class UserEmailVerificationSerializer(serializers.Serializer):
         else:
             uid = urlsafe_base64_encode(force_bytes(email))
             # print("UID: ", uid)
-            link = 'http://localhost:3000/auth/activate/' + uid + '/'
+            link = os.environ.get('VERIFICATION_BASE_URL') +'/auth/activate/' + uid + '/'
             body = 'Click the link below to activate your account \n' + link
             data = {
                 'email_subject': 'Account Activation',
@@ -95,7 +97,7 @@ class SendPasswordResetEmailSerializer(serializers.Serializer):
             user = User.objects.get(email=email)
             uidb64 = urlsafe_base64_encode(force_bytes(user.id))
             token = PasswordResetTokenGenerator().make_token(user)
-            link = 'http://localhost:3000/auth/reset-password/' + uidb64 + '/' + token + '/'
+            link = os.environ.get('VERIFICATION_BASE_URL')+'/auth/reset-password/' + uidb64 + '/' + token + '/'
             body = 'Click the link below to reset your password \n' + link
             data = {
                 'email_subject': 'Password Reset',

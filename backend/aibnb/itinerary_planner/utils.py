@@ -32,7 +32,9 @@ safety_settings = [
     "threshold": "BLOCK_MEDIUM_AND_ABOVE"
   },
 ]
+
 system_instruction = "Generate Itinerary using the given inputs in the following format. Increase/Decrease the number of days in itinerary depending on the input. Do not include escape sequences or new lines: {Title: Duration days tour to Destination, Days:[ {Day: 1, Events: [{Time Stamp:, Activity:, Travel Details:}, {Time Stamp:, Activity:, Travel Detail:}], Food Recommendation:, Accommodation Recommendation:}, {Day: 2, Events:[{Time Stamp:, Activity:,  Travel Details:}, {Time Stamp:, Activity:, Travel Detail:}], Food Recommendation:, Accommodation Recommendation:}, {Day: 3, Events: [{Time Stamp:, Activity:, Travel Details:}, {Time Stamp:, Activity:, Travel Detail:}], Food Recommendation:}]}~"
+
 model = genai.GenerativeModel(model_name="gemini-1.5-pro-latest",
                               generation_config=generation_config,
                               system_instruction=system_instruction,
@@ -40,7 +42,9 @@ model = genai.GenerativeModel(model_name="gemini-1.5-pro-latest",
 
 
 def generate_itinerary(destination, days, guests, budget, preferences):
+
     prompt = [f"destination: {destination}, days:{days}, number of guests: {guests}, budget: ${budget}, preferences: {preferences}"]
+
     itinerary_response = model.generate_content(prompt).text
     cleaned_string = itinerary_response.replace('\\', '').replace('\n', '')
     return cleaned_string
