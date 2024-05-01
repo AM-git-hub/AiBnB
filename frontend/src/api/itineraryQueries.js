@@ -145,4 +145,28 @@ export const itineraryQueries = {
             console.error("Error while fetching itinerary by id", error);
         }
     },
+
+    // update itinerary
+    updateItinerary: async (id, accessToken, isPublic, itinerary) => {
+
+        // create a axios request to update the itinerary with respect to id
+        try {
+            await axios.put(
+                `${baseUrl}/itinerary/update-itinerary/${id}/`,
+                {
+                    id: id,
+                    name: itinerary["Title"],
+                    itinerary_description: JSON.stringify(itinerary),
+                    is_private: !isPublic,
+                },
+                {
+                    headers: {
+                        Authorization: `Bearer ${accessToken}`,
+                    },
+                }
+            );
+        } catch (error) {
+            console.error("Error while updating itinerary", error.response || error);
+        }
+    },
 };

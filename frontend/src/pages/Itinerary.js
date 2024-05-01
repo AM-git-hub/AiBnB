@@ -32,9 +32,16 @@ function Itinerary() {
         setItinerary(itineraryById);
     };
 
-    // function to send feedback
-    const sendFeedback = () => {
-        navigate(`/feedback/${id}`);
+    // function to update itinerary
+    const updateItinerary = async () => {
+        await itineraryQueries.updateItinerary(
+            parseInt(id),
+            accessToken,
+            isPublic,
+            itinerary
+        );
+        // navigate to profile
+        navigate("/profile")
     };
 
     // function to make the radio button public
@@ -56,9 +63,11 @@ function Itinerary() {
                         onClick={selectRadioButton}
                         className="rounded-full border-2 border-white h-5 w-5 flex justify-center items-center"
                     >
-                        <div className={`h-3 w-3 rounded-full border-2 border-black ${isPublic && "bg-white"}`}>
-
-                        </div>
+                        <div
+                            className={`h-3 w-3 rounded-full border-2 border-black ${
+                                isPublic && "bg-white"
+                            }`}
+                        ></div>
                     </button>
                     <span className="text-white">
                         Make this itinerary public
@@ -66,7 +75,7 @@ function Itinerary() {
                 </div>
                 {itinerary && <ItineraryShowcaseCard itinerary={itinerary} />}
                 <div className="mt-6">
-                    <Button label="SAVE" onClick={sendFeedback} />
+                    <Button label="SAVE" onClick={updateItinerary} />
                 </div>
             </ShowcaseContainer>
         </div>

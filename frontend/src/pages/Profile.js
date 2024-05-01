@@ -81,7 +81,7 @@ function Profile() {
                         </div>
                     </div>
 
-                    <div className="flex flex-col flex-1 h-[80%] border-2 border-white p-5 space-y-3">
+                    <div className="flex flex-col flex-1 h-[80%] p-5 space-y-3">
                         <LargeHeading>MY ITINERARIES</LargeHeading>
 
                         {/* If itenaries are empty */}
