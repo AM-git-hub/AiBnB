@@ -3,6 +3,7 @@ import Dashboard from "../pages/Dashboard";
 import Feedback from "../pages/Feedback";
 import Itinerary from "../pages/Itinerary";
 import Profile from "../pages/Profile";
+import PublicItinerary from "../pages/PublicItinerary";
 import ResetPassword from "../pages/ResetPassword";
 import PrivateLayout from "./PrivateLayout";
 
@@ -32,6 +33,10 @@ const router = createBrowserRouter([
     {
         path: "/itinerary/:id",
         element: <Itinerary />,
+    },
+    {
+        path: "/publicItinerary",
+        element: <PublicItinerary />,
     },
 ]);
 

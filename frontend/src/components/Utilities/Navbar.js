@@ -20,6 +20,11 @@ const NAV_LINKS = [
     },
     {
         id: 5,
+        label: "Public Itineraries",
+        linkTo: "/publicItinerary"
+    },
+    {
+        id: 5,
         label: "Logout",
     },
 ];

@@ -169,4 +169,20 @@ export const itineraryQueries = {
             console.error("Error while updating itinerary", error.response || error);
         }
     },
+
+    // get public itineraries
+    getPublicItineraries: async () => {
+        // create a axios get request to get public itineraries
+        try {
+            const response = await axios.get(`${baseUrl}/itinerary/get-public-itineraries/`);
+
+            // unpack the response
+            const itineraries = response.data.data;
+
+            return itineraries;
+
+        } catch (error) {
+            console.error("Error while fetching public itineraries", error)
+        }
+    }
 };

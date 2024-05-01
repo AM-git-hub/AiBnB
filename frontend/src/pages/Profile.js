@@ -94,7 +94,7 @@ function Profile() {
                         ) : (
                             <div className="space-y-5">
                                 {/* Map itineraries */}
-                                {itineraries.map((itinerary, index) => (
+                                {itineraries?.map((itinerary, index) => (
                                     <button
                                         key={index}
                                         onClick={() =>
