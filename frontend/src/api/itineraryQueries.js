@@ -135,6 +135,8 @@ export const itineraryQueries = {
             // unpack itinerary
             const itinerary = response.data.data[0];
 
+            console.log("itinerary", itinerary, response);
+
             // parse JSON string to JSON
             const itineraryJSON = JSON.parse(itinerary.itinerary_description);
 
