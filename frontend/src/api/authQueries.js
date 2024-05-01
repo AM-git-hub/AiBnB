@@ -141,18 +141,17 @@ export const authQueries = {
     },
 
     // function to reset password
-    resetPassword: async (newPassword, accessToken) => {
+    resetPassword: async (newPassword, accessToken, uid) => {
         // create a post request to reset the password
         try {
+            console.log(newPassword, accessToken, uid)
+
             await axios.post(
-                `${baseUrl}/auth/change-password/`,
+                `${baseUrl}/auth/reset-password/${uid}/${accessToken}/`,
                 {
                     password: newPassword,
                     password2: newPassword,
                 },
-                {
-                    headers: `Bearer ${accessToken}`,
-                }
             );
         } catch (error) {
             console.log("error", error);
