@@ -27,6 +27,7 @@ const DayCard = ({
         <div className="flex flex-col space-y-5">
             {events.map((dayEvent, index) => (
                 <div
+                    key={index}
                     className={`${
                         index !== events.length - 1 && "border-b-2"
                     } border-white py-4`}
@@ -80,8 +81,9 @@ function ItineraryShowcaseCard({ itinerary }) {
             {/* Show days data in cards */}
 
             <div className="flex flex-col space-y-10">
-                {itinerary["Days"].map((day) => (
+                {itinerary["Days"].map((day, index) => (
                     <DayCard
+                        key={index}
                         dayNumber={day["Day"]}
                         events={day["Events"]}
                         foodRecommendation={day["Food Recommendation"]}
@@ -91,7 +93,6 @@ function ItineraryShowcaseCard({ itinerary }) {
                     />
                 ))}
             </div>
-
         </div>
     );
 }

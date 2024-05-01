@@ -142,7 +142,6 @@ export const authQueries = {
 
     // function to reset password
     resetPassword: async (newPassword, accessToken) => {
-
         // create a post request to reset the password
         try {
             await axios.post(
@@ -157,6 +156,22 @@ export const authQueries = {
             );
         } catch (error) {
             console.log("error", error);
+        }
+    },
+    // function to delete user
+    deleteUser: async (accessToken) => {
+        try {
+            await axios.post(
+                `${baseUrl}/auth/delete-user/`,
+                {},
+                {
+                    headers: {
+                        Authorization: `Bearer ${accessToken}`,
+                    },
+                }
+            );
+        } catch (error) {
+            console.error("Something went wrong while deleting user", error);
         }
     },
 };

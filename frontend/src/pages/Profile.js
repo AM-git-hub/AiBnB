@@ -9,6 +9,7 @@ import Navbar from "../components/Utilities/Navbar";
 import LargeHeading from "../components/Texts/LargeHeading";
 import { authQueries } from "../api/authQueries";
 import { itineraryQueries } from "../api/itineraryQueries";
+import Button from "../components/Buttons/Button";
 
 const ProfileLabel = ({ label, value }) => (
     <div className="flex flex-row">
@@ -48,6 +49,12 @@ function Profile() {
         navigate(`/itinerary/${itineraryId}`);
     };
 
+    // function to delete account
+    const deleteAccount = async () => {
+        await authQueries.deleteUser(accessToken);
+        navigate("/");
+    };
+
     // Get user information on load
     useEffect(() => {
         fetchProfileData();
@@ -62,14 +69,14 @@ function Profile() {
             <ShowcaseContainer>
                 <div className="flex flex-row space-x-10 h-[100%] py-5">
                     {/* My profile information */}
-                    <div className="p-5 flex flex-[0.2] flex-col border-2 border-white h-[80%]">
+                    <div className="p-5 flex flex-[0.2] flex-col h-[80%]">
                         {/* Profile Image */}
                         <div>
                             <UserCircleIcon height={200} color="white" />
                         </div>
 
                         {/* Profile Information */}
-                        <div>
+                        <div className="flex flex-col space-y-5">
                             <ProfileLabel
                                 label="Email"
                                 value={profileData?.email}
@@ -77,6 +84,10 @@ function Profile() {
                             <ProfileLabel
                                 label="Name"
                                 value={`${profileData?.first_name} ${profileData?.last_name}`}
+                            />
+                            <Button
+                                label="DELETE ACCOUNT"
+                                onClick={deleteAccount}
                             />
                         </div>
                     </div>

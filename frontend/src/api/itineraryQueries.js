@@ -186,5 +186,13 @@ export const itineraryQueries = {
         } catch (error) {
             console.error("Error while fetching public itineraries", error)
         }
+    },
+
+    // delete itinerary
+    deleteItinerary: async () => {
+        try {
+        } catch (error) {
+            console.error("Something went wrong while deleting itinerary", error)
+        }
     }
 };

@@ -11,7 +11,6 @@ import Button from "../components/Buttons/Button";
 import { useNavigate } from "react-router-dom";
 
 function Dashboard() {
-
     const navigate = useNavigate();
 
     return (
@@ -39,7 +38,12 @@ function Dashboard() {
 
                             <div className="flex flex-col items-center">
                                 <div className="w-[50%]">
-                                    <Button onClick={() => navigate("/createItinerary")} label="CREATE ONE NOW!" />
+                                    <Button
+                                        onClick={() =>
+                                            navigate("/createItinerary")
+                                        }
+                                        label="CREATE ONE NOW!"
+                                    />
                                 </div>
                             </div>
                         </div>
@@ -60,8 +64,9 @@ function Dashboard() {
 
                         {/* Itineraries */}
                         <div className="flex flex-row items-center justify-between space-x-4">
-                            {recommendedTripsData.map((trip) => (
+                            {recommendedTripsData.map((trip, index) => (
                                 <TripCard
+                                    key={index}
                                     tripName={trip.name}
                                     imgSource={trip.imageSource}
                                 />

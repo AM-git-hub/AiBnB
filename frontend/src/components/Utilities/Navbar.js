@@ -1,10 +1,8 @@
 import React from "react";
-import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { authQueries } from "../../api/authQueries";
 import Logo from "../../assets/logo.jpg";
-import { baseUrl } from "../../api/baseUrl";
 import NavLink from "../Buttons/NavLink";
 
 const NAV_LINKS = [
@@ -14,17 +12,17 @@ const NAV_LINKS = [
         linkTo: "/dashboard",
     },
     {
-        id: 4,
+        id: 2,
         label: "Profile",
         linkTo: "/profile",
     },
     {
-        id: 5,
+        id: 3,
         label: "Public Itineraries",
         linkTo: "/publicItinerary"
     },
     {
-        id: 5,
+        id: 4,
         label: "Logout",
     },
 ];
@@ -58,9 +56,9 @@ function Navbar() {
 
                 <div className="flex flex-row space-x-10">
                     {/* Nav items */}
-                    {NAV_LINKS.map((link) => (
+                    {NAV_LINKS.map((link, index) => (
                         <NavLink
-                            key={link.id}
+                            key={index}
                             navLabel={link.label}
                             linkTo={link.linkTo}
                             onClick={
